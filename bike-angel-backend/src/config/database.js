@@ -6,12 +6,12 @@ dotenv.config();
 const { Pool } = pg;
 
 // Database connection pool
-// Use connection pooler to avoid Render IPv6 issues
+// Use direct connection with IPv4 (Dedicated IPv4 add-on enabled in Supabase)
 const pool = new Pool({
-  host: process.env.DB_HOST || 'aws-0-us-east-2.pooler.supabase.com',
-  port: parseInt(process.env.DB_PORT) || 6543,
+  host: process.env.DB_HOST || 'db.ujfwjpxdjfqtjeexllsr.supabase.co',
+  port: parseInt(process.env.DB_PORT) || 5432,
   database: process.env.DB_NAME || 'postgres',
-  user: process.env.DB_USER || 'postgres.ujfwjpxdjfqtjeexllsr',
+  user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD,
   ssl: {
     rejectUnauthorized: false
@@ -25,11 +25,11 @@ const pool = new Pool({
 });
 
 // Log connection method
-console.log('📊 Using Supabase connection pooler (IPv4)');
-console.log(`   Host: ${process.env.DB_HOST || 'aws-0-us-east-2.pooler.supabase.com'}`);
-console.log(`   Port: ${process.env.DB_PORT || 6543}`);
+console.log('📊 Using direct Supabase connection (IPv4 enabled)');
+console.log(`   Host: ${process.env.DB_HOST || 'db.ujfwjpxdjfqtjeexllsr.supabase.co'}`);
+console.log(`   Port: ${process.env.DB_PORT || 5432}`);
 console.log(`   Database: ${process.env.DB_NAME || 'postgres'}`);
-console.log('   Note: Connection pooler avoids Render IPv6 issues');
+console.log('   Note: Dedicated IPv4 address enabled in Supabase');
 
 // Test database connection
 pool.on('connect', () => {

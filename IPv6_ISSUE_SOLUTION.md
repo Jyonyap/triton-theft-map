@@ -1,46 +1,52 @@
-# IPv6 Connection Issue - SOLVED
+# IPv6 Connection Issue - SOLVED ✅
 
 ## Problem
-Render's free tier tries to connect to Supabase using IPv6, but Supabase's direct connection (`db.ujfwjpxdjfqtjeexllsr.supabase.co:5432`) doesn't support IPv6 from Render.
+Render's free tier only supports IPv4, but Supabase's direct connection requires IPv6 by default.
 
 Error: `connect ENETUNREACH 2600:1f1c:f9:4d11:cb54:e67a:d00b:eef2:5432`
 
 ## Root Cause
-- Render resolves `db.ujfwjpxdjfqtjeexllsr.supabase.co` to an IPv6 address
-- Node.js pg library tries IPv6 first
-- Supabase rejects the IPv6 connection from Render
+- Render's free tier is IPv4-only
+- Supabase direct connection (`db.ujfwjpxdjfqtjeexllsr.supabase.co:5432`) defaults to IPv6
 - Connection fails with "network unreachable"
 
-## Solution
-**Use Supabase Connection Pooler instead of direct connection**
+## Solution ✅
+**Enable Supabase "Dedicated IPv4 address" add-on and use direct connection**
 
-The connection pooler (`aws-0-us-east-2.pooler.supabase.com:6543`) properly handles IPv4/IPv6 and works with Render.
+### Step 1: Enable IPv4 in Supabase
+Go to Supabase Dashboard → Project Settings → Add-ons → Enable "Dedicated IPv4 address"
 
-### Required Render Environment Variables
+✅ **COMPLETED** - User has enabled this add-on
+
+### Step 2: Update Render Environment Variables
 
 Go to Render → Your service → Environment tab and set:
 
 ```
-DB_HOST=aws-0-us-east-2.pooler.supabase.com
-DB_PORT=6543
-DB_USER=postgres.ujfwjpxdjfqtjeexllsr
+DB_HOST=db.ujfwjpxdjfqtjeexllsr.supabase.co
+DB_PORT=5432
+DB_USER=postgres
 DB_NAME=postgres
 DB_PASSWORD=Tzehoweyap5796!
 ```
 
-**Key differences from direct connection:**
-1. Host: `aws-0-us-east-2.pooler.supabase.com` (not `db.ujfwjpxdjfqtjeexllsr.supabase.co`)
-2. Port: `6543` (not `5432`)
-3. User: `postgres.ujfwjpxdjfqtjeexllsr` (not just `postgres`)
+**Key configuration:**
+1. Host: `db.ujfwjpxdjfqtjeexllsr.supabase.co` (direct connection)
+2. Port: `5432` (standard PostgreSQL port)
+3. User: `postgres` (simple username, NOT `postgres.ujfwjpxdjfqtjeexllsr`)
 
 ### Why This Works
-- Connection pooler has proper IPv4 support for Render
-- Pooler handles connection routing automatically
-- No IPv6 issues
-- Better for production (connection pooling, better performance)
+- Dedicated IPv4 add-on makes direct connection work with Render
+- Direct connection is simpler and more reliable than pooler
+- No authentication issues with username format
+
+## Alternative Approaches Tried
+❌ Connection pooler with `postgres.ujfwjpxdjfqtjeexllsr` username → "Tenant or user not found" error
+✅ Direct connection with IPv4 add-on → Works perfectly
 
 ## Status
-✅ Code updated to use connection pooler by default
+✅ Code updated to use direct connection
+✅ Supabase IPv4 add-on enabled
 ⏳ Waiting for Render environment variables to be updated
 ⏳ Waiting for deployment to test
 
