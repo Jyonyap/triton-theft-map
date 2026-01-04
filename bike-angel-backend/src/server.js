@@ -29,7 +29,7 @@ app.get('/health', (req, res) => {
 app.get('/api/health', async (req, res) => {
   try {
     // Check database connection
-    const { query } = await import('./database/init.js');
+    const { query } = await import('./config/database.js');
     await query('SELECT 1');
     
     res.json({
