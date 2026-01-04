@@ -6,27 +6,30 @@ dotenv.config();
 const { Pool } = pg;
 
 // Database connection pool
-// Use direct database connection (not pooler) to avoid IPv6/auth issues
+// Use connection pooler to avoid Render IPv6 issues
 const pool = new Pool({
-  host: process.env.DB_HOST || 'db.ujfwjpxdjfqtjeexllsr.supabase.co',
-  port: parseInt(process.env.DB_PORT) || 5432,
+  host: process.env.DB_HOST || 'aws-0-us-east-2.pooler.supabase.com',
+  port: parseInt(process.env.DB_PORT) || 6543,
   database: process.env.DB_NAME || 'postgres',
-  user: process.env.DB_USER || 'postgres',
+  user: process.env.DB_USER || 'postgres.ujfwjpxdjfqtjeexllsr',
   password: process.env.DB_PASSWORD,
   ssl: {
     rejectUnauthorized: false
   },
+  options: '-c search_path=public',
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000
+  connectionTimeoutMillis: 10000,
+  keepAlive: true,
+  keepAliveInitialDelayMillis: 10000
 });
 
 // Log connection method
-console.log('📊 Using direct Supabase database connection');
-console.log(`   Host: ${process.env.DB_HOST || 'db.ujfwjpxdjfqtjeexllsr.supabase.co'}`);
-console.log(`   Port: ${process.env.DB_PORT || 5432}`);
+console.log('📊 Using Supabase connection pooler (IPv4)');
+console.log(`   Host: ${process.env.DB_HOST || 'aws-0-us-east-2.pooler.supabase.com'}`);
+console.log(`   Port: ${process.env.DB_PORT || 6543}`);
 console.log(`   Database: ${process.env.DB_NAME || 'postgres'}`);
-console.log('   Note: Render will resolve to IPv4 automatically');
+console.log('   Note: Connection pooler avoids Render IPv6 issues');
 
 // Test database connection
 pool.on('connect', () => {
