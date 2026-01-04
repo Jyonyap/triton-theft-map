@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Environment</title>
+</head>
+<body>
+    <h1>Environment Debug</h1>
+    <p>Open the browser console (F12) to see the API URL</p>
+    <script type="module">
+        const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+        console.log('API_URL:', API_URL);
+        document.body.innerHTML += `<h2>API URL: ${API_URL}</h2>`;
+    </script>
+</body>
+</html>

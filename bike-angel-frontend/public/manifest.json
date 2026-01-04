@@ -1,0 +1,60 @@
+{
+  "name": "Bike Angel - UCSD Bicycle Safety",
+  "short_name": "Bike Angel",
+  "description": "Campus bicycle safety collaboration platform for UCSD students",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "navigation", "utilities"],
+  "screenshots": [
+    {
+      "src": "/screenshot-map.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "label": "Campus map with parking zones"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "View Map",
+      "short_name": "Map",
+      "description": "View campus parking map",
+      "url": "/map",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Report Parking",
+      "short_name": "Report",
+      "description": "Report your parking status",
+      "url": "/report-parking",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}

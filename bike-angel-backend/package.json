@@ -1,0 +1,51 @@
+{
+  "name": "bike-angel-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Bike Angel campus bicycle safety platform",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "db:init": "node src/database/init.js init",
+    "db:drop": "node src/database/init.js drop",
+    "db:reset": "node src/database/init.js reset",
+    "db:test": "node src/database/test-connection.js",
+    "db:seed": "node src/database/seedZones.js seed",
+    "db:list-zones": "node src/database/seedZones.js list",
+    "db:migrate": "node src/database/runMigration.js",
+    "admin:setup": "node src/database/setupAdmin.js",
+    "storage:test": "node src/utils/testStorage.js",
+    "monitoring:test": "node src/utils/testMonitoring.js"
+  },
+  "keywords": [
+    "bike",
+    "safety",
+    "ucsd",
+    "parking"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.956.0",
+    "@aws-sdk/lib-storage": "^3.956.0",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "form-data": "^4.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^4.2.1",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.11.3",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2"
+  }
+}
