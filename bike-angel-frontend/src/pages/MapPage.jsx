@@ -135,11 +135,11 @@ function MapPage() {
       <div className="container mx-auto px-4 py-6">
         <header className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h1 className="text-3xl sm:text-4xl font-bold text-red-600">
               🚨 Triton Theft Map
             </h1>
-            <p className="mt-1 text-sm text-gray-600">
-              {user ? `Welcome back, ${user.name}!` : 'Real-time bike theft data at UCSD'}
+            <p className="mt-1 text-sm sm:text-base text-gray-700 font-medium">
+              Know where NOT to park your bike at UCSD
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -178,68 +178,68 @@ function MapPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">
-                  Bike Theft Hotspots
+                  Is Your Bike Safe Here?
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Based on reported incidents in the last 6 months
+                  Real theft incidents reported by UCSD students
                 </p>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                  onClick={() => navigate('/report-theft')}
+                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-bold rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 shadow-lg hover:shadow-xl transition-all"
+                >
+                  <svg className="mr-2 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  🚨 Report Theft
+                </button>
                 {user && (
                   <button
                     onClick={() => navigate('/report-parking')}
-                    className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-xs font-medium rounded-md text-gray-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
                   >
-                    <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    Parking
+                    Share Parking Photo
                   </button>
                 )}
-                <button
-                  onClick={() => navigate('/report-theft')}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                >
-                  <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                  Report Theft
-                </button>
               </div>
             </div>
             
             {/* Triton Theft Map Legend */}
-            <div className="mb-4 p-4 bg-gradient-to-r from-red-50 via-orange-50 to-gray-50 rounded-lg border border-gray-200">
+            <div className="mb-4 p-4 bg-gradient-to-r from-red-100 via-orange-50 to-gray-50 rounded-lg border-2 border-red-200">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-900 mb-3">🔍 Theft Risk Levels</p>
+                  <p className="text-sm font-bold text-red-900 mb-3">⚠️ Theft Risk Zones - Last 6 Months</p>
                   <div className="flex flex-wrap gap-4 text-sm">
                     <div className="flex items-center">
-                      <div className="w-6 h-6 bg-red-500 rounded-full mr-2 flex items-center justify-center text-white font-bold text-xs">
+                      <div className="w-7 h-7 bg-red-500 rounded-full mr-2 flex items-center justify-center text-white font-bold shadow-md">
                         🚨
                       </div>
                       <div>
-                        <span className="font-semibold text-red-700">High Risk</span>
-                        <span className="text-gray-600 ml-1">(3+ thefts)</span>
+                        <span className="font-bold text-red-700">HIGH RISK</span>
+                        <span className="text-gray-700 ml-1 font-medium">(3+ thefts)</span>
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <div className="w-6 h-6 bg-orange-500 rounded-full mr-2 flex items-center justify-center text-white font-bold text-xs">
+                      <div className="w-7 h-7 bg-orange-500 rounded-full mr-2 flex items-center justify-center text-white font-bold shadow-md">
                         ⚠️
                       </div>
                       <div>
-                        <span className="font-semibold text-orange-700">Medium Risk</span>
-                        <span className="text-gray-600 ml-1">(1-2 thefts)</span>
+                        <span className="font-bold text-orange-700">MEDIUM RISK</span>
+                        <span className="text-gray-700 ml-1 font-medium">(1-2 thefts)</span>
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <div className="w-6 h-6 bg-gray-400 rounded-full mr-2 flex items-center justify-center text-white font-bold text-xs">
-                        👻
+                      <div className="w-7 h-7 bg-gray-400 rounded-full mr-2 flex items-center justify-center text-white font-bold shadow-md">
+                        ?
                       </div>
                       <div>
-                        <span className="font-semibold text-gray-700">No Recent Data</span>
-                        <span className="text-gray-600 ml-1">(Unknown risk)</span>
+                        <span className="font-bold text-gray-700">Unknown</span>
+                        <span className="text-gray-600 ml-1">(No data yet)</span>
                       </div>
                     </div>
                   </div>
@@ -333,8 +333,8 @@ function MapPage() {
                   </div>
                 ) : (
                   <div className="bg-gray-100 rounded-lg p-4">
-                    <p className="text-sm text-gray-600 mb-4">
-                      Click on a zone to view details, theft incidents, and recent photos
+                    <p className="text-sm text-red-700 font-medium mb-4">
+                      ⚠️ Click any zone to see theft incidents and safety details
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto">
                       {zones.map((zone) => (

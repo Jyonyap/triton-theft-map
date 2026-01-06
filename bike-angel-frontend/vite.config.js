@@ -4,11 +4,11 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: mode === 'development' ? [react(), basicSsl()] : [react()],
+  plugins: [react()], // Removed basicSsl for easier local testing
   server: {
     host: '0.0.0.0', // Allow network access
     port: 5173,
-    https: mode === 'development', // Enable HTTPS only in development
+    https: false, // Disabled HTTPS for local testing
     proxy: mode === 'development' ? {
       // Proxy API requests to backend (development only)
       '/api': {

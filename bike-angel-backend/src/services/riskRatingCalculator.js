@@ -31,11 +31,11 @@ class RiskRatingCalculator {
       // Determine risk rating based on theft frequency
       let riskRating;
       if (theftCount >= 3) {
-        riskRating = 'HIGH'; // Red zone
+        riskRating = 'red'; // High risk - 3+ thefts
       } else if (theftCount >= 1) {
-        riskRating = 'MEDIUM'; // Orange zone
+        riskRating = 'yellow'; // Medium risk - 1-2 thefts (using yellow for orange)
       } else {
-        riskRating = 'SAFE'; // Gray zone
+        riskRating = 'green'; // Safe - 0 thefts
       }
       
       // Update parking_zones table

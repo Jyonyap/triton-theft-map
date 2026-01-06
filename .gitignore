@@ -32,3 +32,17 @@ coverage/
 # Misc
 *.pem
 .cache/
+
+# Personal files (not part of project)
+PAST QUARTERS/
+*.lnk
+*.url
+*.pdf
+*.xlsx
+*.pptx
+*.jpg
+*.jpeg
+*.png
+*.JPG
+*.zip
+desktop.ini
