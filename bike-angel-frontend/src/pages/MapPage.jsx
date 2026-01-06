@@ -234,12 +234,12 @@ function MapPage() {
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <div className="w-7 h-7 bg-gray-400 rounded-full mr-2 flex items-center justify-center text-white font-bold shadow-md">
-                        ?
+                      <div className="w-7 h-7 bg-green-500 rounded-full mr-2 flex items-center justify-center text-white font-bold shadow-md">
+                        ✓
                       </div>
                       <div>
-                        <span className="font-bold text-gray-700">Unknown</span>
-                        <span className="text-gray-600 ml-1">(No data yet)</span>
+                        <span className="font-bold text-green-700">SAFE</span>
+                        <span className="text-gray-700 ml-1 font-medium">(0 thefts)</span>
                       </div>
                     </div>
                   </div>

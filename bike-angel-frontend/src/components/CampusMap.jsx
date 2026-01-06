@@ -41,6 +41,7 @@ const createMarkerIcon = (riskRating, incidentCount = 0) => {
       icon = '🚨';
       break;
     case 'MEDIUM':
+    case 'yellow': // Database uses 'yellow', not 'orange'
     case 'orange':
       color = '#F97316'; // Orange - Medium theft risk
       icon = '⚠️';
@@ -48,7 +49,7 @@ const createMarkerIcon = (riskRating, incidentCount = 0) => {
     case 'LOW':
     case 'SAFE':
     case 'green':
-      color = '#9CA3AF'; // Gray - No recent data / Safe
+      color = '#10B981'; // Green - Safe zone
       icon = '✓';
       break;
     default:
@@ -138,12 +139,14 @@ function CampusMap({ zones = [], onZoneClick, userLocation = null, center = null
                     <div className="flex items-center">
                       <span className="font-medium mr-1">Risk:</span>
                       <span className={`
-                        px-2 py-0.5 rounded-full text-white
+                        px-2 py-0.5 rounded-full text-white font-semibold uppercase text-xs
                         ${zone.risk_rating === 'red' ? 'bg-red-500' : ''}
-                        ${zone.risk_rating === 'yellow' ? 'bg-yellow-500' : ''}
+                        ${zone.risk_rating === 'yellow' || zone.risk_rating === 'orange' ? 'bg-orange-500' : ''}
                         ${zone.risk_rating === 'green' ? 'bg-green-500' : ''}
                       `}>
-                        {zone.risk_rating}
+                        {zone.risk_rating === 'red' ? 'HIGH RISK' : 
+                         (zone.risk_rating === 'yellow' || zone.risk_rating === 'orange') ? 'MEDIUM RISK' : 
+                         'SAFE'}
                       </span>
                     </div>
                     <div className="flex items-center">
