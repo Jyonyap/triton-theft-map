@@ -14,10 +14,13 @@ function ReportTheftPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
+  const [locationStatus, setLocationStatus] = useState('detecting'); // 'detecting', 'found', 'not-found', 'error'
   
   // Fetch zones on mount
   useEffect(() => {
     fetchZones();
+    getUserLocation();
     // Set default date/time to now
     const now = new Date();
     const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
@@ -35,6 +38,82 @@ function ReportTheftPage() {
       console.error('Error fetching zones:', err);
     }
   };
+  
+  // Get user's GPS location and auto-select nearest zone if within 50m
+  const getUserLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationStatus('error');
+      return;
+    }
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLon = position.coords.longitude;
+        setUserLocation({ lat: userLat, lon: userLon });
+        setLocationStatus('found');
+        
+        // Auto-select nearest zone if within 50m
+        autoSelectNearestZone(userLat, userLon);
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        setLocationStatus('not-found');
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  };
+  
+  // Calculate distance between two coordinates (Haversine formula)
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3; // Earth's radius in meters
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+    
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    
+    return R * c; // Distance in meters
+  };
+  
+  // Auto-select zone if user is within 50m
+  const autoSelectNearestZone = (userLat, userLon) => {
+    if (!zones || zones.length === 0) return;
+    
+    let nearestZone = null;
+    let minDistance = Infinity;
+    
+    zones.forEach(zone => {
+      if (zone.latitude && zone.longitude) {
+        const distance = calculateDistance(userLat, userLon, zone.latitude, zone.longitude);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestZone = zone;
+        }
+      }
+    });
+    
+    // Auto-select if within 50 meters
+    if (nearestZone && minDistance <= 50) {
+      setSelectedZone(nearestZone.id);
+      console.log(`Auto-selected ${nearestZone.name} (${Math.round(minDistance)}m away)`);
+    }
+  };
+  
+  // Re-run auto-selection when zones load
+  useEffect(() => {
+    if (zones.length > 0 && userLocation && !selectedZone) {
+      autoSelectNearestZone(userLocation.lat, userLocation.lon);
+    }
+  }, [zones, userLocation]);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,7 +240,17 @@ function ReportTheftPage() {
           {/* Zone Selector */}
           <div className="mb-6">
             <label htmlFor="zone" className="block text-sm font-medium text-gray-700 mb-2">
-              Parking Zone *
+              Where was it stolen? *
+              {locationStatus === 'detecting' && (
+                <span className="ml-2 text-xs text-gray-500">
+                  📍 Detecting location...
+                </span>
+              )}
+              {locationStatus === 'found' && selectedZone && (
+                <span className="ml-2 text-xs text-green-600">
+                  ✓ Auto-detected your location
+                </span>
+              )}
             </label>
             <select
               id="zone"
@@ -170,13 +259,18 @@ function ReportTheftPage() {
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
               required
             >
-              <option value="">Select where the theft occurred</option>
+              <option value="">Select theft location...</option>
               {zones.map((zone) => (
                 <option key={zone.id} value={zone.id}>
                   {zone.name}
                 </option>
               ))}
             </select>
+            {locationStatus === 'not-found' && (
+              <p className="mt-1 text-xs text-gray-500">
+                💡 Couldn't detect your location. Please select the zone manually.
+              </p>
+            )}
           </div>
           
           {/* Date/Time Picker */}
