@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
 /**
  * Create a new theft incident report
@@ -16,7 +16,7 @@ export async function createTheftIncident(incidentData) {
     throw new Error('Authentication required. Please log in.');
   }
   
-  const response = await fetch(`${API_URL}/api/incidents/theft`, {
+  const response = await fetch(`${API_URL}/incidents/theft`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export async function createTheftIncident(incidentData) {
  * @returns {Promise<Object>} Theft incidents data
  */
 export async function getTheftIncidentsByZone(zoneId, days = 90) {
-  const response = await fetch(`${API_URL}/api/incidents/theft/${zoneId}?days=${days}`);
+  const response = await fetch(`${API_URL}/incidents/theft/${zoneId}?days=${days}`);
   
   const data = await response.json();
   
