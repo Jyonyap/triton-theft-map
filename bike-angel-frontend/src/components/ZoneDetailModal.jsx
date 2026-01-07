@@ -313,13 +313,23 @@ function ZoneDetailModal({ zone, onClose }) {
                           className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow"
                         >
                           <div className="flex items-start justify-between mb-2 flex-wrap gap-2">
-                            <div className="flex items-center space-x-2">
-                              <span className="text-xs sm:text-sm font-medium text-gray-900">
-                                {formatDate(incident.date_time)}
-                              </span>
-                              <span className="text-xs sm:text-sm text-gray-500">
-                                at {formatTime(incident.date_time)}
-                              </span>
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2 mb-1">
+                                <span className="text-xs sm:text-sm font-medium text-gray-900">
+                                  {formatDate(incident.date_time)}
+                                </span>
+                                <span className="text-xs sm:text-sm text-gray-500">
+                                  at {formatTime(incident.date_time)}
+                                </span>
+                              </div>
+                              {incident.user_name && (
+                                <div className="flex items-center text-xs text-gray-600">
+                                  <svg className="h-3 w-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                  </svg>
+                                  Reported by {incident.user_name}
+                                </div>
+                              )}
                             </div>
                             {incident.verified && (
                               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">

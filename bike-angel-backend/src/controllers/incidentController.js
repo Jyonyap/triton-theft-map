@@ -145,16 +145,18 @@ export const getTheftIncidentsByZone = async (req, res, next) => {
     // Get incidents for the zone within the time period
     const result = await pool.query(
       `SELECT 
-        id,
-        date_time,
-        description,
-        police_report_number,
-        verified,
-        created_at
-       FROM theft_incidents
-       WHERE zone_id = $1 
-         AND date_time > NOW() - INTERVAL '${days} days'
-       ORDER BY date_time DESC`,
+        ti.id,
+        ti.date_time,
+        ti.description,
+        ti.police_report_number,
+        ti.verified,
+        ti.created_at,
+        u.name as user_name
+       FROM theft_incidents ti
+       LEFT JOIN users u ON ti.user_id = u.id
+       WHERE ti.zone_id = $1 
+         AND ti.date_time > NOW() - INTERVAL '${days} days'
+       ORDER BY ti.date_time DESC`,
       [zoneId]
     );
     
